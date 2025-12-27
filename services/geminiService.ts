@@ -6,7 +6,36 @@ export class GeminiService {
   private ai: GoogleGenAI;
 
   constructor() {
-    this.ai = new GoogleGenAI({ apiKey: process.env.API_KEY as string });
+    // Correct initialization using process.env.API_KEY directly.
+    this.ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+  }
+
+  async generateRandomPrompt(): Promise<string> {
+    const response = await this.ai.models.generateContent({
+      model: 'gemini-3-flash-preview',
+      contents: `Generate a single, short, and highly interesting search query for a curiosity-driven user. 
+      It could be about science, history, current trending technology, or a "how it works" topic. 
+      Return ONLY the search query text. No quotes, no intro, just the query.`,
+      config: {
+        temperature: 1.0, // High temperature for more randomness
+      },
+    });
+
+    return response.text?.trim() || "Why is the sky blue?";
+  }
+
+  async tweakQuery(query: string): Promise<string> {
+    const response = await this.ai.models.generateContent({
+      model: 'gemini-3-flash-preview',
+      contents: `Refine and optimize the following search query to get the most accurate and comprehensive results from a web search: "${query}". 
+      Make it professional, specific, and clear. 
+      Return ONLY the refined query text, no explanation.`,
+      config: {
+        temperature: 0.5,
+      },
+    });
+
+    return response.text?.trim() || query;
   }
 
   async refineQuery(originalQuery: string, currentSummary: string): Promise<string> {

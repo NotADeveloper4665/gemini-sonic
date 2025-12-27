@@ -13,6 +13,7 @@ export interface SearchResponse {
 
 export enum AppStatus {
   IDLE = 'IDLE',
+  TWEAKING = 'TWEAKING',
   ANALYZING = 'ANALYZING',
   SEARCHING = 'SEARCHING',
   SYNTHESIZING = 'SYNTHESIZING',
