@@ -1,0 +1,7 @@
+{
+  "name": "Gemini Search Audio Summary",
+  "description": "A smart search assistant that performs Google-grounded searches and provides concise audio summaries of the findings using the latest Gemini models.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
