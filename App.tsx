@@ -249,7 +249,7 @@ const App: React.FC = () => {
         
         {/* Search Header / Top Bar */}
         <div className={`w-full flex flex-col items-center transition-all duration-700 ease-in-out ${results ? 'pt-6 pb-6 border-b border-[#3c4043] bg-[#202124] sticky top-0 z-50' : 'pt-[15vh] pb-8'}`}>
-          <div className={`flex items-center gap-6 w-full max-w-4xl px-4 md:px-8 relative`}>
+          <div className={`flex ${results ? 'flex-row items-center gap-6' : 'flex-col items-center'} w-full max-w-4xl px-4 md:px-8 relative`}>
             
             {/* Sidebar toggle button when closed */}
             {!isSidebarOpen && (
@@ -271,7 +271,7 @@ const App: React.FC = () => {
             </div>
 
             {!results && (
-              <div className="flex flex-col items-center gap-2 mb-8 w-full">
+              <div className="flex flex-col items-center gap-2 mb-10 w-full animate-in fade-in duration-700">
                 <div className="flex items-baseline gap-1">
                   <span className="text-4xl md:text-6xl font-bold tracking-tight text-[#4285F4]">G</span>
                   <span className="text-4xl md:text-6xl font-bold tracking-tight text-[#EA4335]">e</span>
@@ -287,7 +287,7 @@ const App: React.FC = () => {
               </div>
             )}
 
-            <div className={`flex-1 transition-all duration-500`}>
+            <div className={`transition-all duration-500 ${results ? 'flex-1' : 'w-full max-w-2xl'}`}>
               <form onSubmit={handleSearch} className="relative w-full group">
                 <div className={`relative flex items-center bg-[#303134] border border-[#5f6368] rounded-full px-5 py-2.5 search-shadow transition-all group-focus-within:border-transparent group-focus-within:bg-[#3c4043]`}>
                   <Search className="w-4 h-4 text-[#9aa0a6] mr-3" />
@@ -313,7 +313,7 @@ const App: React.FC = () => {
             {results && (
               <button 
                 onClick={handleGoBack}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm text-[#9aa0a6] hover:text-white hover:bg-[#303134] transition-all ml-4"
+                className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm text-[#9aa0a6] hover:text-white hover:bg-[#303134] transition-all ml-4 shrink-0"
               >
                 <Home className="w-4 h-4" />
                 <span className="hidden md:inline">Go back to search</span>
@@ -329,15 +329,25 @@ const App: React.FC = () => {
               <button onClick={handleSearch} className="bg-[#303134] text-[#e8eaed] px-4 py-2 rounded border border-transparent hover:border-[#5f6368] hover:bg-[#3c4043] transition-all text-sm">
                 Gemini Search
               </button>
-              <button 
-                type="button" 
-                onClick={handleWorkshop}
-                disabled={!query.trim()}
-                className="bg-[#303134] text-[#e8eaed] px-4 py-2 rounded border border-transparent hover:border-[#5f6368] hover:bg-[#3c4043] transition-all text-sm flex items-center gap-2 disabled:opacity-50"
-              >
-                <Hammer className="w-4 h-4 text-[#34A853]" />
-                Workshop
-              </button>
+              
+              <div className="relative group/workshop">
+                <button 
+                  type="button" 
+                  onClick={handleWorkshop}
+                  disabled={!query.trim()}
+                  className="bg-[#303134] text-[#e8eaed] px-4 py-2 rounded border border-transparent hover:border-[#5f6368] hover:bg-[#3c4043] transition-all text-sm flex items-center gap-2 disabled:opacity-50"
+                >
+                  <Hammer className="w-4 h-4 text-[#34A853]" />
+                  Workshop
+                </button>
+                {/* Custom Tooltip */}
+                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 px-3 py-2 bg-[#171717] text-white text-[11px] rounded-lg opacity-0 group-hover/workshop:opacity-100 transition-all duration-300 whitespace-nowrap pointer-events-none border border-[#303134] shadow-xl z-[70] transform scale-95 group-hover/workshop:scale-100">
+                  Start typing then press this button to have gemini work on it for you
+                  {/* Tooltip Arrow */}
+                  <div className="absolute top-full left-1/2 -translate-x-1/2 border-8 border-transparent border-t-[#171717]"></div>
+                </div>
+              </div>
+
               <button 
                 type="button" 
                 onClick={handleFeelingLucky} 
@@ -482,18 +492,11 @@ const App: React.FC = () => {
           )}
         </main>
 
-        <footer className="w-full bg-[#171717] border-t border-[#303134] py-4 mt-auto">
-           <div className="max-w-4xl mx-auto px-8 flex flex-col md:flex-row justify-between items-center gap-4 text-[#9aa0a6] text-sm">
-              <div className="flex gap-6">
-                <span className="hover:text-white cursor-pointer">About</span>
-                <span className="hover:text-white cursor-pointer">Advertising</span>
-                <span className="hover:text-white cursor-pointer">Business</span>
-              </div>
-              <div className="flex gap-6">
-                <span className="hover:text-white cursor-pointer">Privacy</span>
-                <span className="hover:text-white cursor-pointer">Terms</span>
-                <span className="hover:text-white cursor-pointer">Settings</span>
-              </div>
+        <footer className="w-full bg-[#171717] border-t border-[#303134] py-6 mt-auto">
+           <div className="max-w-4xl mx-auto px-8 text-center">
+             <p className="text-[10px] text-[#5f6368] font-medium tracking-wide uppercase">
+               I'm not affiliated with Google and this is just a side project for no monetary gain.
+             </p>
            </div>
         </footer>
       </div>
